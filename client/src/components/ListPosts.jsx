@@ -33,7 +33,7 @@ const ListPosts = () => {
   return (
     <div>
       <h2>Posts</h2>
-      <div className="d-flex flex-row flex-wrap justify-content-between">
+      <div className="d-flex flex-row flex-wrap justify-content-start">
         {renderedPosts}
       </div>
     </div>

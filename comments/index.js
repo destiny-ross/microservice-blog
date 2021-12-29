@@ -11,24 +11,36 @@ app.use(cors());
 let commentsByPostId = {};
 
 app.get("/posts/:id/comments", (req, res) => {
-  const { id } = req.params;
-  console.log(`GET /posts/${id}/comments hit`);
-
-  return res.status(200).send(commentsByPostId[id]);
+  res.send(commentsByPostId[req.params.id] || []);
 });
 
-app.post("/posts/:id/comments", (req, res) => {
-  const { id } = req.params;
-  const { content } = req.body;
-  console.log(`POST /posts/${id}/comments hit`);
-
+app.post("/posts/:id/comments", async (req, res) => {
   const commentId = randomBytes(4).toString("hex");
-  let comments = commentsByPostId[id] || [];
+  const { content } = req.body;
+  console.log(content);
+
+  let comments = commentsByPostId[req.params.id] || [];
 
   comments.push({ id: commentId, content });
+
   commentsByPostId[req.params.id] = comments;
 
-  res.status(201).send(commentsByPostId);
+  await axios.post("http://localhost:4005/events", {
+    type: "CommentCreated",
+    data: {
+      id: commentId,
+      content,
+      postId: req.params.id,
+    },
+  });
+
+  res.status(201).send(comments);
+});
+
+app.post("/events", (req, res) => {
+  console.log("Event Received", req.body.type);
+
+  res.send({});
 });
 
 app.listen(4001, () => {

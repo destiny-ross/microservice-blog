@@ -1,38 +1,37 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const ListComments = ({ postId }) => {
-  const [comments, setComments] = useState({});
+const CommentList = ({ postId }) => {
+  const [comments, setComments] = useState([]);
 
-  useEffect(() => {
-    getComments();
-  }, []);
-
-  const getComments = async () => {
+  const fetchData = async () => {
     const res = await axios.get(
       `http://localhost:4001/posts/${postId}/comments`
     );
+
     setComments(res.data);
   };
 
-  const renderedComments = Object.values(comments).map((comment) => {
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const renderedComments = comments.map((comment) => {
     return (
-      <li style={{ listStyle: "none" }} key={comment.id}>
+      <li style={{ listStyle: "none", margin: 0 }} key={comment.id}>
         {comment.content}
       </li>
     );
   });
+
   return (
-    <div>
-      <h3>Comments</h3>
-      <div
-        style={{ marginBottom: "10px" }}
-        className="d-flex flex-column flex-wrap just-content-between"
-      >
-        {renderedComments}
-      </div>
-    </div>
+    <ul
+      className="d-flex flex-column justify-content-start"
+      style={{ padding: "0 0 0 0" }}
+    >
+      {renderedComments}
+    </ul>
   );
 };
 
-export default ListComments;
+export default CommentList;
