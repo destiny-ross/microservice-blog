@@ -10,7 +10,7 @@ const ListPosts = () => {
   }, []);
 
   const getPosts = async () => {
-    const res = await axios.get("http://localhost:4000/posts");
+    const res = await axios.get("http://localhost:4002/posts");
     setPosts(res.data);
   };
 
@@ -24,7 +24,7 @@ const ListPosts = () => {
         <div className="card-body d-flex flex-column justify-content-start">
           <h3>{post.title}</h3>
           <hr />
-          <ListComments postId={post.id} />
+          <ListComments comments={post.comments} />
           <CreateComment postId={post.id} />
         </div>
       </div>
