@@ -25,7 +25,7 @@ app.post("/posts/:id/comments", async (req, res) => {
 
   commentsByPostId[req.params.id] = comments;
 
-  await axios.post("http://localhost:4005/events", {
+  await axios.post("http://event-bus-serv:4005/events", {
     type: "CommentCreated",
     data: {
       id: commentId,
@@ -49,7 +49,7 @@ app.post("/events", async (req, res) => {
       return comment.id === id;
     });
     comment.status = status;
-    await axios.post("http://localhost:4005/events", {
+    await axios.post("http://event-bus-serv:4005/events", {
       type: "CommentUpdated",
       data: {
         id,
@@ -64,5 +64,5 @@ app.post("/events", async (req, res) => {
 });
 
 app.listen(4001, () => {
-  console.log("Comment service listening on http://localhost:4001");
+  console.log("Comment service listening on port 4001");
 });
