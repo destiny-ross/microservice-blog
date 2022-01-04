@@ -11,12 +11,7 @@ app.use(morgan("tiny"));
 app.use(cors({}));
 let posts = {};
 
-app.get("/posts", (_req, res) => {
-  console.log("GET /posts hit");
-  return res.status(200).send(posts);
-});
-
-app.post("/posts", async (req, res) => {
+app.post("/posts/create", async (req, res) => {
   const id = randomBytes(4).toString("hex");
   const { title } = req.body;
 
@@ -43,5 +38,5 @@ app.post("/events", (req, res) => {
 });
 
 app.listen(4000, () => {
-  console.log("Post service listening on http://localhost:4000");
+  console.log("Post service listening on port 4000");
 });

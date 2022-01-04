@@ -10,7 +10,7 @@ const ListPosts = () => {
   }, []);
 
   const getPosts = async () => {
-    const res = await axios.get("http://localhost:4002/posts");
+    const res = await axios.get("http://test-blog.com/posts");
     setPosts(res.data);
   };
 
